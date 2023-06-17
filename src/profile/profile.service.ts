@@ -15,6 +15,21 @@ export class ProfileService {
                 @Inject('meilisearch') private client: MeiliSearch ) {}
 
     async createProfile(profile: CreateProfileDto) {
+
+        // 
+        // flow
+        //  call commandBus.execute
+        //      in src/profile/commands/impl/create-profile-command.ts
+        //          call profileRepository.createOne
+        //              in src/profile/profile.repository.ts
+        //          call publisher.mergeObjectContext
+        //              in src/profile/commands/handlers/create-profile-handler.ts
+        // 
+        //  saving in mongoose
+        //  publishing event  
+        //  in src/profile/commands/handlers/create-profile-handler.ts
+        // 
+
         return this.commandBus.execute(new CreateProfileCommand(profile));
     }
     

@@ -11,9 +11,12 @@ export class CreateCommandHandler implements ICommandHandler<CreateProfileComman
     async execute(command: CreateProfileCommand) {
         Logger.log('createProfileHandler...', 'CreateProfileCommand');
 
+
+        // saving in mongoose
         const { profile } = command;
         const profileCreated = await this.profileRepository.createOne(profile);
         
+        // publishing event
         const publishProfile = this.publisher.mergeObjectContext(profileCreated);
         publishProfile.createProfile();
 
